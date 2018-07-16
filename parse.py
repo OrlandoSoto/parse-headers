@@ -1,5 +1,8 @@
 #! /usr/bin/python
 import urllib3
+import re
+
+next_re = re.compile(r'<(.*)>; rel="next"')
 
 gh_api_pool = urllib3.connection_from_url('https://api.github.com', maxsize=50, block=True)
 
@@ -18,11 +21,8 @@ my_list = links.split(",")
 
 for item in my_list:
     if 'rel="next"' in item:
-        item_to_split = str(item)
-        print item_to_split
-        print item.rstrip()
-
-
+        next_match = next_re.match(item)
+        print next_match.groups()[0]
 
 
 
